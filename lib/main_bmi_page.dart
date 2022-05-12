@@ -1,11 +1,18 @@
-import 'dart:ffi';
-
+import 'package:bmi_calculator/result_page.dart';
 import 'package:bmi_calculator/widgets/custom_widget.dart';
 import 'package:bmi_calculator/widgets/gender_widget.dart';
 import 'package:bmi_calculator/widgets/height_widget.dart';
 import 'package:bmi_calculator/widgets/weight_age_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+enum Gender {
+  Male,
+  Female,
+  None,
+}
+
+enum Toyota { Rav4, LandCruiser, window }
 
 class MainBmiPage extends StatefulWidget {
   const MainBmiPage({Key key}) : super(key: key);
@@ -16,6 +23,15 @@ class MainBmiPage extends StatefulWidget {
 
 class _MainBmiPageState extends State<MainBmiPage> {
   double _sliderValue = 165;
+  int _weight = 70;
+  int _age = 30;
+  Color _activeTus = Color.fromARGB(255, 130, 131, 151);
+  Color _inactiveTus = const Color(0xff111327);
+  // bool _maleKnopka = false;
+  // bool _femaleKnopka = false;
+
+  Gender _gender = Gender.None;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,16 +44,34 @@ class _MainBmiPageState extends State<MainBmiPage> {
           children: [
             Expanded(
               child: Row(
-                children: const [
+                children: [
                   CustomWidget(
-                    widget: GenderWidget(
+                    onTap: () {
+                      setState(() {
+                        // _maleKnopka = true;
+                        // _maleKnopka = !_maleKnopka;
+                        _gender = Gender.Male;
+                      });
+                    },
+                    // color: _maleKnopka == true ? _activeTus : _inactiveTus,
+                    color: _gender == Gender.Male ? _activeTus : _inactiveTus,
+                    widget: const GenderWidget(
                         icons: FontAwesomeIcons.mars, text: 'male'),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 15.0,
                   ),
                   CustomWidget(
-                    widget: GenderWidget(
+                    onTap: () {
+                      setState(() {
+                        // _femaleKnopka = true;
+                        // _femaleKnopka = !_femaleKnopka;
+                        _gender = Gender.Female;
+                      });
+                    },
+                    // color: _femaleKnopka == true ? _activeTus : _inactiveTus,
+                    color: _gender == Gender.Female ? _activeTus : _inactiveTus,
+                    widget: const GenderWidget(
                         icons: FontAwesomeIcons.venus, text: 'female'),
                   ),
                 ],
@@ -60,15 +94,40 @@ class _MainBmiPageState extends State<MainBmiPage> {
             ),
             Expanded(
               child: Row(
-                children: const [
+                children: [
                   CustomWidget(
-                    widget: WeightAgeWidget(soz: 'weight', ekinchiSoz: '60'),
+                    widget: WeightAgeWidget(
+                        minus: () {
+                          setState(() {
+                            _weight--;
+                          });
+                        },
+                        plus: () {
+                          setState(() {
+                            _weight++;
+                          });
+                        },
+                        soz: 'weight',
+                        ekinchiSoz: _weight.toString()),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 15.0,
                   ),
                   CustomWidget(
-                    widget: WeightAgeWidget(soz: 'age', ekinchiSoz: '25'),
+                    widget: WeightAgeWidget(
+                      minus: (() {
+                        setState(() {
+                          _age--;
+                        });
+                      }),
+                      plus: (() {
+                        setState(() {
+                          _age = _age + 1;
+                        });
+                      }),
+                      soz: 'age',
+                      ekinchiSoz: _age.toString(),
+                    ),
                   ),
                 ],
               ),
@@ -76,6 +135,31 @@ class _MainBmiPageState extends State<MainBmiPage> {
           ],
         ),
       ),
+      bottomNavigationBar: MaterialButton(
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: ((context) => const ResultPage())));
+        },
+        child: Container(
+          height: 100.0,
+          color: Colors.red,
+          child: Center(
+            child: Text(
+              'Calculate'.toUpperCase(),
+              style: const TextStyle(
+                fontSize: 45.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
+/// Turnary operator ===>> _maleKnopka == true ? _activeTus  : _inactive
+/// if(_maleKnopka == true){
+/// _activeTus;
+/// }else{
+/// _inactive
+/// }
