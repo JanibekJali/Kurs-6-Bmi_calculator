@@ -6,6 +6,9 @@ import 'package:bmi_calculator/widgets/weight_age_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'brain/bmi_brain.dart';
+import 'widgets/button_calculate.dart';
+
 enum Gender {
   Male,
   Female,
@@ -135,28 +138,24 @@ class _MainBmiPageState extends State<MainBmiPage> {
           ],
         ),
       ),
-      bottomNavigationBar: MaterialButton(
+      bottomNavigationBar: Button_Calculate(
+        text: 'Calculate',
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: ((context) => const ResultPage())));
-        },
-        child: Container(
-          height: 100.0,
-          color: Colors.red,
-          child: Center(
-            child: Text(
-              'Calculate'.toUpperCase(),
-              style: const TextStyle(
-                fontSize: 45.0,
-                fontWeight: FontWeight.bold,
-              ),
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: ((context) => ResultPage(
+                    bmiResult: bmiBrain.calculateBrain(_weight, _age),
+                  )),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
 }
+
+
 /// Turnary operator ===>> _maleKnopka == true ? _activeTus  : _inactive
 /// if(_maleKnopka == true){
 /// _activeTus;
