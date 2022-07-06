@@ -1,5 +1,7 @@
-import 'package:bmi_calculator/main_bmi_page.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import 'pages/main_bmi_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,16 +12,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData.dark().copyWith(
         appBarTheme: const AppBarTheme(
-          centerTitle:true, 
+          centerTitle: true,
           backgroundColor: Color(0xff111327),
         ),
         scaffoldBackgroundColor: const Color(0xff0A0E20),
       ),
-      home: const MainBmiPage(),
+      home: MainBmiPage(),
     );
   }
 }

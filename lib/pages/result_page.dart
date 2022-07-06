@@ -1,10 +1,10 @@
-import 'package:bmi_calculator/brain/bmi_brain.dart';
-import 'package:bmi_calculator/widgets/button_calculate.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../get_x_controller/result_controller.dart';
+import '../widgets/button_calculate.dart';
 
 class ResultPage extends StatelessWidget {
-  const ResultPage({Key key, this.bmiResult}) : super(key: key);
-  final double bmiResult;
+  final ResultController resultController = Get.put(ResultController());
 
   @override
   Widget build(BuildContext context) {
@@ -34,29 +34,29 @@ class ResultPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text(
-                    bmiBrain.getResult(bmiResult),
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green,
-                    ),
-                  ),
-                  Text(
-                    bmiResult.round().toString(),
-                    style: TextStyle(
-                      fontSize: 100.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  Obx(() => Text(
+                        resultController.title.value,
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green,
+                        ),
+                      )),
+                  Obx(() => Text(
+                        resultController.result.value.toStringAsFixed(1),
+                        style: TextStyle(
+                          fontSize: 100.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )),
                   // color: Colors.,
-                  Text(
-                    bmiBrain.getInterpretation(bmiResult),
-                    style: TextStyle(
-                      fontSize: 17.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  Obx(() => Text(
+                        resultController.descrition.value,
+                        style: TextStyle(
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )),
                 ],
               ),
             ),
@@ -65,7 +65,7 @@ class ResultPage extends StatelessWidget {
       ),
       bottomNavigationBar: Button_Calculate(
         text: 'Re-Calculate',
-        // onPressed: Navigator.pop(  context)
+        onPressed: () => Navigator.pop(context),
       ),
     );
   }
